@@ -1,0 +1,142 @@
+body {
+    font-family: 'Source Sans Pro';
+}
+
+/* Header */
+
+#header {
+    background-color: #333333;
+    color: #dcdcdc;
+    padding-top: 5.5em;
+    padding-bottom: 5em;
+}
+
+h1 {
+    font-size: 5rem;
+    font-weight: 200;
+    text-align: center;
+}
+
+/* Content */
+
+#content {
+    background-color: #fdf6e3; /* solarized base3 */
+    /* try base2: #eee8d5 */
+    color: rgba(51, 51, 51, 0.75);
+    padding: 3em 6em;
+}
+
+h2 {
+    margin-bottom: 0.5em;
+}
+
+ol {
+    counter-reset: item;
+    margin: 0 0 1.5em;
+    padding: 0;
+}
+   
+ol > li {
+    counter-increment: item;
+    list-style-type: none;
+    margin: 0;
+    padding: 0 0 0 2em;
+    text-indent: -2em;
+}
+   
+ol > li:before {
+    content: counter(item) ".";
+    display: inline-block;
+    font-weight: bold;
+    padding-right: 0.5em;
+    text-align: right;
+    width: 1.5em;
+}
+
+#main {
+    display: inline-block;
+    margin-top: 0.75em;
+}
+
+.editor {
+    background-color: #f6f6f6;
+    border-radius: 1%;
+    color: rgba(0, 0, 0, 0.75);
+    font-family: monospace;
+    font-size: 1.25em;
+    margin-right: 2.5em;
+    padding: 0.75em;
+    resize: none;
+}
+
+.editor:focus {
+    outline: none;
+}
+
+.editor:last-child {
+    margin-right: initial;
+}
+
+#below-editors {
+    margin-top: 1em;
+}
+
+#options {
+    float: left;
+}
+
+#colors {
+    margin-bottom: 1em;
+}
+
+#colors > * {
+    float: left;
+    margin-right: 1em;
+}
+
+#colors::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+.form-control {
+    background-color: #f6f6f6;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+#wrapper-btn {
+    align-items: flex-end;
+    display: flex;
+    float: right;
+}
+
+#wrapper-btn > * {
+    float: left;
+}
+
+#notif-clipboard {
+    margin-bottom: 0; /* Bootstrap adds margin-bottom to each p */
+    margin-right: 1em;
+    opacity: 0;
+}
+
+#notif-clipboard.fading {
+    animation: fade-in 0.35s none, fade-out 1.25s ease-out 0.35s;
+}
+
+.btn {
+    border: 2.5px solid green;
+    border-radius: 7.5px;
+    color: green;
+}
+
+@keyframes fade-in {
+    from { opacity: 1; }
+    to { opacity: 1; }
+}
+
+@keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}

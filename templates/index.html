@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <!-- fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400&display=swap" rel="stylesheet">
+
+        <title>GP Colorizer</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='dist/bootstrap-colorpicker.css') }}">
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                <h1>GP Colorizer</h1>
+            </div>
+            <div id="content">
+                <div id="instructions">
+                    <h2>Instructions</h2>
+                    <ol>
+                        <li>Write your GP check using the following syntax: <b>add</b> <del>remove</del> <b>(comment)</b></li>
+                        <li>Click the "Toggle BB Code" button located towards the top-right of the editor</li>
+                        <li>Copy and paste your check into the box below and click "Colorize"</li>
+                        <li>Paste the output back into the editor and click the BB Code button again. Your check is now colorized!</li>
+                    </ol>
+                </div>
+
+                <div id="main">
+                    <div id="editors">
+                        <textarea id="input" class="editor" rows="12" cols="60" placeholder="Enter your BB code here..." spellcheck="false"></textarea>
+                        <!-- TODO: Select all or none of the text -->
+                        <textarea id="output" class="editor" rows="12" cols="60" spellcheck="false" readonly></textarea>
+                    </div>
+                    <div id="below-editors">
+                        <div id="options">
+                            <div id="colors">
+                                <div>
+                                    <label for="opt-add-color">Add:</label>
+                                    <input id="opt-add-color" type="text" class="form-control" value="#2969B0">
+                                </div>
+                                <div>
+                                    <label for="opt-remove-color">Remove:</label>
+                                    <input id="opt-remove-color" type="text" class="form-control" value="#B8312F">
+                                </div>
+                                <div>
+                                    <label for="opt-comment-color">Comment:</label>
+                                    <input id="opt-comment-color" type="text" class="form-control" value="#41A85F">
+                                </div>
+                            </div>
+
+                            <input id="opt-preamble" type="checkbox" checked>
+                            <label for="opt-preamble"> Add preamble</label>
+                            <br>
+                            <input id="opt-strip-parens" type="checkbox">
+                            <label for="opt-strip-parens"> Strip parentheses from comments</label>
+                        </div>
+                        <div id="wrapper-btn">
+                            <p id="notif-clipboard">Copied to clipboard!</p>
+                            <input id="btn-colorize" class="btn" type="button" value="Colorize">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        
+        <script type="text/javascript" src="{{ url_for('static', filename='clipboard.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='colorizer.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='dist/bootstrap-colorpicker.js') }}"></script>
+
+        <script type="text/javascript">
+        $('#btn-colorize').click(function() {
+            let input = $('#input').val();
+            let options = {
+                addColor: $('#opt-add-color').val(),
+                removeColor: $('#opt-remove-color').val(),
+                commentColor: $('#opt-comment-color').val(),
+
+                addPreamble: $('#opt-preamble').prop('checked'),
+                stripParens: $('#opt-strip-parens').prop('checked'),
+            };
+            let output = colorize(input, options);
+            $('#output').val(output);
+
+            copyToClipboard(output);
+
+            // Flash "copied to clipboard" message
+            $('#notif-clipboard').removeClass('fading');
+            setTimeout(function() {
+                $('#notif-clipboard').addClass('fading');
+            }, 10);
+        });
+
+        $(function() {
+            $('#opt-add-color').colorpicker();
+            $('#opt-remove-color').colorpicker();
+            $('#opt-comment-color').colorpicker();
+        });
+        </script>
+    </body>
+</html>
