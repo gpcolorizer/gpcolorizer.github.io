@@ -12,12 +12,12 @@ function addPreamble(text) {
 
 function colorAdditions(text, color) {
     let colorText = getRGBText(color);
-    return text.replace(/\[B\](.*?)\[\/B\]/gm, `[COLOR=${colorText}][B]$1[/B][/COLOR]`);
+    return text.replace(/\[B\](.*?)\[\/B\]/gs, `[COLOR=${colorText}][B]$1[/B][/COLOR]`);
 }
 
 function colorRemovals(text, color) {
     let colorText = getRGBText(color);
-    return text.replace(/\[S\](.*?)\[\/S\]/gm, `[COLOR=${colorText}][B][S]$1[/COLOR][/B][/S]`);
+    return text.replace(/\[S\](.*?)\[\/S\]/gs, `[COLOR=${colorText}][B][S]$1[/COLOR][/B][/S]`);
 }
 
 function colorComments(text, color, stripParens) {
@@ -26,9 +26,9 @@ function colorComments(text, color, stripParens) {
         let replaceWith = stripParens
             ? `[COLOR=${colorText}]$1[/COLOR]`
             : `[COLOR=${colorText}]($1)[/COLOR]`;
-        return match.replace(/\((.*?)\)/gm, replaceWith);
+        return match.replace(/\((.*?)\)/gs, replaceWith);
     }
-    return text.replace(/\[B\].*?\[\/B\]/gm, colorSingleBlock);
+    return text.replace(/\[B\].*?\[\/B\]/gs, colorSingleBlock);
 }
 
 function colorize(text, options) {
