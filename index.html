@@ -41,15 +41,30 @@
                             <div id="colors">
                                 <div>
                                     <label for="opt-add-color">Add:</label>
-                                    <input id="opt-add-color" type="text" class="form-control" value="#2969B0">
+                                    <div id="opt-add-color" class="input-group">
+                                        <input type="text" class="form-control" value="#2969B0">
+                                        <span class="input-group-append">
+                                            <span class="input-group-text colorpicker-input-addon"><i></i></span>
+                                        </span>
+                                    </div>
                                 </div>
                                 <div>
                                     <label for="opt-remove-color">Remove:</label>
-                                    <input id="opt-remove-color" type="text" class="form-control" value="#B8312F">
+                                    <div id="opt-remove-color" class="input-group">
+                                        <input type="text" class="form-control" value="#B8312F">
+                                        <span class="input-group-append">
+                                            <span class="input-group-text colorpicker-input-addon"><i></i></span>
+                                        </span>
+                                    </div>
                                 </div>
                                 <div>
                                     <label for="opt-comment-color">Comment:</label>
-                                    <input id="opt-comment-color" type="text" class="form-control" value="#41A85F">
+                                    <div id="opt-comment-color" class="input-group">
+                                        <input type="text" class="form-control" value="#41A85F">
+                                        <span class="input-group-append">
+                                            <span class="input-group-text colorpicker-input-addon"><i></i></span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -81,9 +96,9 @@
         $('#btn-colorize').click(function() {
             let input = $('#input').val();
             let options = {
-                addColor: $('#opt-add-color').val(),
-                removeColor: $('#opt-remove-color').val(),
-                commentColor: $('#opt-comment-color').val(),
+                addColor: $('#opt-add-color > input').val(),
+                removeColor: $('#opt-remove-color > input').val(),
+                commentColor: $('#opt-comment-color > input').val(),
 
                 addPreamble: $('#opt-preamble').prop('checked'),
                 stripParens: $('#opt-strip-parens').prop('checked'),
@@ -101,9 +116,7 @@
         });
 
         $(function() {
-            $('#opt-add-color').colorpicker();
-            $('#opt-remove-color').colorpicker();
-            $('#opt-comment-color').colorpicker();
+            $('#opt-add-color, #opt-remove-color, #opt-comment-color').colorpicker();
         });
         </script>
     </body>
