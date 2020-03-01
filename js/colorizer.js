@@ -15,17 +15,20 @@ function colorAdditions(text, color) {
     return text.replace(/\[B\](.*?)\[\/B\]/gs, `[COLOR=${colorText}][B]$1[/B][/COLOR]`);
 }
 
-function colorRemovals(text, color) {
+function colorRemovals(text, color, keepStrikethrough) {
     let colorText = getRGBText(color);
-    return text.replace(/\[S\](.*?)\[\/S\]/gs, `[COLOR=${colorText}][B][S]$1[/COLOR][/B][/S]`);
+    let replaceWith = keepStrikethrough
+        ? `[COLOR=${colorText}][B][S]$1[/S][/B][/COLOR]`
+        : `[COLOR=${colorText}][B]$1[/B][/COLOR]`;
+    return text.replace(/\[S\](.*?)\[\/S\]/gs, replaceWith);
 }
 
-function colorComments(text, color, stripParens) {
+function colorComments(text, color, keepParens) {
     let colorText = getRGBText(color);
     function colorSingleBlock(match) {
-        let replaceWith = stripParens
-            ? `[COLOR=${colorText}]$1[/COLOR]`
-            : `[COLOR=${colorText}]($1)[/COLOR]`;
+        let replaceWith = keepParens
+            ? `[COLOR=${colorText}]($1)[/COLOR]`
+            : `[COLOR=${colorText}]$1[/COLOR]`;
         return match.replace(/\((.*?)\)/gs, replaceWith);
     }
     return text.replace(/\[B\].*?\[\/B\]/gs, colorSingleBlock);
@@ -35,8 +38,8 @@ function colorize(text, options) {
     if (options.addPreamble) {
         text = addPreamble(text);
     }
-    text = colorComments(text, options.commentColor, options.stripParens);
+    text = colorComments(text, options.commentColor, options.keepParens);
     text = colorAdditions(text, options.addColor);
-    text = colorRemovals(text, options.removeColor);
+    text = colorRemovals(text, options.removeColor, options.keepStrikethrough);
     return text;
 }

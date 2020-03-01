@@ -71,8 +71,11 @@
                             <input id="opt-preamble" type="checkbox" checked>
                             <label for="opt-preamble"> Add preamble</label>
                             <br>
-                            <input id="opt-strip-parens" type="checkbox">
-                            <label for="opt-strip-parens"> Strip parentheses from comments</label>
+                            <input id="opt-keep-strikethrough" type="checkbox" checked>
+                            <label for="opt-keep-strikethrough"> Keep strikethrough for removals</label>
+                            <br>
+                            <input id="opt-keep-parens" type="checkbox" checked>
+                            <label for="opt-keep-parens"> Keep parentheses for comments</label>
                         </div>
                         <div id="wrapper-btn">
                             <p id="notif-clipboard">Copied to clipboard!</p>
@@ -101,7 +104,8 @@
                 commentColor: $('#opt-comment-color > input').val(),
 
                 addPreamble: $('#opt-preamble').prop('checked'),
-                stripParens: $('#opt-strip-parens').prop('checked'),
+                keepStrikethrough: $('#opt-keep-strikethrough').prop('checked'),
+                keepParens: $('#opt-keep-parens').prop('checked'),
             };
             let output = colorize(input, options);
             $('#output').val(output);
