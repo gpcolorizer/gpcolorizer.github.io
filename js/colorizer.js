@@ -12,34 +12,39 @@ function addPreamble(text) {
 
 function colorAdditions(text, color) {
     let colorText = getRGBText(color);
-    return text.replace(/\[B\](.*?)\[\/B\]/gs, `[COLOR=${colorText}][B]$1[/B][/COLOR]`);
+    function colorSingleBlock(_, p1, p2, p3) {
+        // Within bold blocks, color everything outside of parentheses
+        return p1 + p2.replace(/([^()]+)($|\()/gs, `[COLOR=${colorText}]$1[/COLOR]$2`) + p3;
+    }
+    return text.replace(/(\[B\])(.+?)(\[\/B\])/gs, colorSingleBlock);
 }
 
 function colorRemovals(text, color, keepStrikethrough) {
     let colorText = getRGBText(color);
     let replaceWith = keepStrikethrough
-        ? `[COLOR=${colorText}][B][S]$1[/S][/B][/COLOR]`
-        : `[COLOR=${colorText}][B]$1[/B][/COLOR]`;
-    return text.replace(/\[S\](.*?)\[\/S\]/gs, replaceWith);
+        ? `[B][COLOR=${colorText}][S]$1[/S][/COLOR][/B]`
+        : `[B][COLOR=${colorText}]$1[/COLOR][/B]`;
+    return text.replace(/\[S\](.+?)\[\/S\]/gs, replaceWith);
 }
 
 function colorComments(text, color, keepParens) {
     let colorText = getRGBText(color);
-    function colorSingleBlock(match) {
+    function colorSingleBlock(_, p1, p2, p3) {
+        // Within bold blocks, color everything inside of parentheses
         let replaceWith = keepParens
             ? `[COLOR=${colorText}]($1)[/COLOR]`
             : `[COLOR=${colorText}]$1[/COLOR]`;
-        return match.replace(/\((.*?)\)/gs, replaceWith);
+        return p1 + p2.replace(/\(([^()]*)\)/gs, replaceWith) + p3;
     }
-    return text.replace(/\[B\].*?\[\/B\]/gs, colorSingleBlock);
+    return text.replace(/(\[B\])(.+?)(\[\/B\])/gs, colorSingleBlock);
 }
 
 function colorize(text, options) {
     if (options.addPreamble) {
         text = addPreamble(text);
     }
-    text = colorComments(text, options.commentColor, options.keepParens);
     text = colorAdditions(text, options.addColor);
     text = colorRemovals(text, options.removeColor, options.keepStrikethrough);
+    text = colorComments(text, options.commentColor, options.keepParens);
     return text;
 }
