@@ -14,7 +14,7 @@ function colorAdditions(text, color) {
     let colorText = getRGBText(color);
     function colorSingleBlock(_, p1, p2, p3) {
         // Within bold blocks, color everything outside of parentheses
-        return p1 + p2.replace(/([^()]+)($|\()/gs, `[COLOR=${colorText}]$1[/COLOR]$2`) + p3;
+        return p1 + p2.replace(/(^|\))(.+?)($|\()/gs, `$1[COLOR=${colorText}]$2[/COLOR]$3`) + p3;
     }
     return text.replace(/(\[B\])(.+?)(\[\/B\])/gs, colorSingleBlock);
 }
@@ -34,7 +34,7 @@ function colorComments(text, color, keepParens) {
         let replaceWith = keepParens
             ? `[COLOR=${colorText}]($1)[/COLOR]`
             : `[COLOR=${colorText}]$1[/COLOR]`;
-        return p1 + p2.replace(/\(([^()]*)\)/gs, replaceWith) + p3;
+        return p1 + p2.replace(/\((.*?)\)/gs, replaceWith) + p3;
     }
     return text.replace(/(\[B\])(.+?)(\[\/B\])/gs, colorSingleBlock);
 }
