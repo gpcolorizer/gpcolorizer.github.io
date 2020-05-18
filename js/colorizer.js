@@ -25,6 +25,12 @@ function addPreamble(text) {
     return '[B]add[/B] [S]remove[/S] [B](comment)[/B]\n' + text;
 }
 
+// If bold tags are put inside of color tags, this will cause us to overwrite existing colors with our own
+// colors, which we don't want to do.
+function fixColorTags(text) {
+    return text.replace(/\[COLOR=(.{0,18})\]\[B\](.*?)\[\/B\]\[\/COLOR\]/gs, '[B][COLOR=$1]$2[/COLOR][/B]');
+}
+
 function colorAdditions(text, color) {
     let rgb = getRGBText(color);
     return text.replace(insideOf('[B]', '[/B]'), boldText =>
@@ -54,6 +60,7 @@ function colorize(text, options) {
     if (options.addPreamble) {
         text = addPreamble(text);
     }
+    text = fixColorTags(text);
     text = colorAdditions(text, options.addColor);
     text = colorRemovals(text, options.removeColor, options.keepStrikethrough);
     text = colorComments(text, options.commentColor, options.keepParens);
